@@ -14,6 +14,8 @@ import { useLocalStorageGet } from "./services/utils";
 import DetailsProducts from "./pages/DetailsProducts";
 import CreateProducts from "./pages/CreateProducts";
 import Users from "./pages/Users";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface PrivateRouteProps {
   component: React.ComponentType<unknown>;
@@ -64,7 +66,8 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <>
     <RouterProvider router={router} />
-  </React.StrictMode>
+    <ToastContainer />
+  </>
 );

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Product } from "../interfaces/products.interface";
 
 const URL_API = "https://fakestoreapi.com/";
 
@@ -57,8 +58,8 @@ export function generateToken() {
   return uuidv4();
 }
 
-export function useAPIService<T>(url: string) {
-  const [data, setData] = useState<T | null>(null);
+export function useAPIServiceGet(url: string) {
+  const [data, setData] = useState<[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,4 +79,76 @@ export function useAPIService<T>(url: string) {
   };
 
   return { data, loading, error, fetchData };
+}
+
+export function useAPIServicePost(url: string) {
+  const [data, setData] = useState<[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const postData = async (data: Product) => {
+    setLoading(true);
+    axios
+      .post(`${URL_API}${url}`, data)
+      .then((response) => {
+        console.log(response);
+        setData(response.data);
+      })
+      .catch((error) => {
+        setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return { data, loading, error, postData };
+}
+
+export function useAPIServiceDelete(url: string) {
+  const [data, setData] = useState<[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const deleteData = async (id: string) => {
+    setLoading(true);
+    axios
+      .delete(`${URL_API}${url}/${id}`)
+      .then((response) => {
+        console.log(response);
+        setData(response.data);
+      })
+      .catch((error) => {
+        setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return { data, loading, error, deleteData };
+}
+
+export function useAPIServicePut(url: string) {
+  const [data, setData] = useState<[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const putData = async (data: Product) => {
+    setLoading(true);
+    axios
+      .put(`${URL_API}${url}/${data.id}`, data)
+      .then((response) => {
+        console.log(response);
+        setData(response.data);
+      })
+      .catch((error) => {
+        setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return { data, loading, error, putData };
 }

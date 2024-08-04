@@ -1,7 +1,20 @@
 export interface Product {
   id: string;
-  name: string;
+  title: string;
   price: number;
+}
+
+export interface ProductDetails {
+  title: string;
+  price: number;
+  description: string;
+  image: string;
+  category: string;
+  id: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 export interface ProductsStore {

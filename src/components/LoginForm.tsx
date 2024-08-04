@@ -8,6 +8,7 @@ const LoginForm = () => {
   const login = authStore((state: any) => state.login);
   const navigate = useNavigate();
   const [, setToken] = useLocalStorageSet("token", "");
+  const [, setUser] = useLocalStorageSet("user", "");
 
   return (
     <div className="flex flex-col justify-center items-center h-[50rem] w-[41rem] p-36 border-solid border-2 rounded-lg shadow-md">
@@ -61,7 +62,7 @@ const LoginForm = () => {
         }}
         onSubmit={(values, actions) => {
           login();
-          console.log(values);
+          setUser(values.email);
           const newToken = generateToken();
           setToken(newToken);
           actions.setSubmitting(false);
