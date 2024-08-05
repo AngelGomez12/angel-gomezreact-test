@@ -4,7 +4,10 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 const UserForm = () => {
-  const user = useLocalStorageGet("user", "");
+  const user = useLocalStorageGet("user", {
+    email: "",
+    password: "",
+  });
   const [, setUser] = useLocalStorageSet("user", "");
   useEffect(() => {
     console.log(user);
@@ -14,7 +17,10 @@ const UserForm = () => {
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-2xl font-bold">Modificar usuario</h1>
       <Formik
-        initialValues={{ email: user || "" }}
+        initialValues={{
+          email: user?.email || "",
+          password: user?.password || "",
+        }}
         onSubmit={(values) => {
           setUser(values.email);
           toast.success("Usuario modificado con Exito");
@@ -31,6 +37,16 @@ const UserForm = () => {
                 type="email"
                 name="email"
                 value={values.email}
+                onChange={handleChange}
+                className="rounded-lg border-2 p-3 m-2"
+              />
+              <label className="font-bold text-lg text-center">
+                Contraseña
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={values.password}
                 onChange={handleChange}
                 className="rounded-lg border-2 p-3 m-2"
               />

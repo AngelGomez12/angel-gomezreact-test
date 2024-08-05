@@ -3,13 +3,29 @@ import { authStore } from "../store/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { generateToken, useLocalStorageSet } from "../services/utils";
 import { toast } from "react-toastify";
+import { useState } from "react";
+interface User {
+  email: string;
+  password: string;
+}
 
 const LoginForm = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const login = authStore((state: any) => state.login);
   const navigate = useNavigate();
   const [, setToken] = useLocalStorageSet("token", "");
-  const [, setUser] = useLocalStorageSet("user", "");
+
+  const [user, setUser] = useLocalStorageSet<User>(
+    "user",
+    JSON.stringify({
+      email: "",
+      password: "",
+    })
+  );
+  const [userDefault] = useState({
+    email: user?.email || "test@gmail.com",
+    password: user?.password || "Welcome123!",
+  });
 
   return (
     <div className="flex flex-col justify-center items-center h-[50rem] w-[41rem] p-36 border-solid border-2 rounded-lg shadow-md">
@@ -27,6 +43,9 @@ const LoginForm = () => {
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
           ) {
             errors.email = "Ingrese un email válido";
+          }
+          if (values.email !== userDefault.email) {
+            errors.email = "Email incorrecto";
           }
           if (!values.password) {
             errors.password = "Requerido";
@@ -55,6 +74,10 @@ const LoginForm = () => {
             errors.password = "Debe tener al menos un caracter especial";
           }
 
+          if (values.password !== userDefault.password) {
+            errors.password = "Contraseña incorrecta";
+          }
+
           if (values.password !== values.confirmPassword) {
             errors.confirmPassword = "Las contraseñas no coinciden";
           }
@@ -63,7 +86,10 @@ const LoginForm = () => {
         }}
         onSubmit={(values, actions) => {
           login();
-          setUser(values.email);
+          setUser({
+            email: values.email,
+            password: values.password,
+          });
           const newToken = generateToken();
           setToken(newToken);
           actions.setSubmitting(false);
