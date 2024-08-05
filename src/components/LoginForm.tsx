@@ -52,7 +52,7 @@ const LoginForm = () => {
           }
 
           if (values.password.length < 6) {
-            errors.password = "Debe tener al menos 8 caracteres";
+            errors.password = "Debe tener al menos 6 caracteres";
           }
 
           if (values.password.length > 12) {

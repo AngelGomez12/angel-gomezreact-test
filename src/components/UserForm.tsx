@@ -21,12 +21,54 @@ const UserForm = () => {
           email: user?.email || "",
           password: user?.password || "",
         }}
+        validate={(values) => {
+          const errors: Record<string, string> = {};
+          if (!values.email) {
+            errors.email = "Requerido";
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+          ) {
+            errors.email = "Ingrese un email válido";
+          }
+
+          if (!values.password) {
+            errors.password = "Requerido";
+          }
+
+          if (values.password.length < 6) {
+            errors.password = "Debe tener al menos 6 caracteres";
+          }
+
+          if (values.password.length > 12) {
+            errors.password = "Debe tener menos de 12 caracteres";
+          }
+
+          if (
+            !(values.password.match(/[a-z]/) && values.password.match(/[A-Z]/))
+          ) {
+            errors.password =
+              "Debe tener al menos una letra minúscula y una mayúscula";
+          }
+
+          if (!values.password.match(/\d+/)) {
+            errors.password = "Debe tener al menos un número";
+          }
+
+          if (!values.password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/)) {
+            errors.password = "Debe tener al menos un caracter especial";
+          }
+
+          return errors;
+        }}
         onSubmit={(values) => {
-          setUser(values.email);
+          setUser({
+            email: values.email,
+            password: values.password,
+          });
           toast.success("Usuario modificado con Exito");
         }}
       >
-        {({ values, handleChange, handleSubmit }) => (
+        {({ values, errors, touched, handleChange, handleSubmit }) => (
           <form
             onSubmit={handleSubmit}
             className="flex flex-col justify-center items-center"
@@ -40,6 +82,7 @@ const UserForm = () => {
                 onChange={handleChange}
                 className="rounded-lg border-2 p-3 m-2"
               />
+              {errors.email && touched.email && errors.email}
               <label className="font-bold text-lg text-center">
                 Contraseña
               </label>
@@ -50,6 +93,7 @@ const UserForm = () => {
                 onChange={handleChange}
                 className="rounded-lg border-2 p-3 m-2"
               />
+              {errors.password && touched.password && errors.password}
             </div>
             <button
               type="submit"
