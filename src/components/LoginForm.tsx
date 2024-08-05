@@ -2,6 +2,7 @@ import { Formik } from "formik";
 import { authStore } from "../store/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { generateToken, useLocalStorageSet } from "../services/utils";
+import { toast } from "react-toastify";
 
 const LoginForm = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,6 +67,7 @@ const LoginForm = () => {
           const newToken = generateToken();
           setToken(newToken);
           actions.setSubmitting(false);
+          toast.success("Login exitoso");
           navigate("/dashboard");
         }}
       >

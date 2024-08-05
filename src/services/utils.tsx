@@ -63,10 +63,10 @@ export function useAPIServiceGet(url: string) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = async ({ order }: { order?: string } = {}) => {
     setLoading(true);
     axios
-      .get(`${URL_API}${url}`)
+      .get(order ? `${URL_API}${url}?sort=${order}` : `${URL_API}${url}`)
       .then((response) => {
         setData(response.data);
       })

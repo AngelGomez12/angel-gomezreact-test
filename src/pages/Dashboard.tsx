@@ -8,7 +8,7 @@ export const Dashboard = () => {
           <Link to="/dashboard/products">
             <li className="p-4 pl-8 hover:bg-sky-700">Productos</li>
           </Link>
-          <Link to="/dashboard/create">
+          <Link to="/dashboard/products/create">
             <li className="p-4 pl-8 hover:bg-sky-700">Crear Producto</li>
           </Link>
           <Link to="/dashboard/users">
