@@ -258,7 +258,7 @@ const ListProducts = () => {
         <Modal isOpen={isModalOpen}>
           <CreateProductForm
             product={selectProduct}
-            modalOpen={setIsModalOpen}
+            setModalOpen={setIsModalOpen}
             setIsEdit={setIsEdit}
           />
         </Modal>
